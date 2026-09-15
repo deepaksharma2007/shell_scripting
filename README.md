@@ -52,7 +52,7 @@ Verify that AWS CLI is installed:
 
 ```bash
 aws --version
-
+```
 
 
 
