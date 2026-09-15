@@ -72,354 +72,136 @@ Verify that AWS CLI is installed:
 ```bash
 aws --version
 ```
+If AWS CLI is not installed, install it according to your operating system.
 
-<img width="906" height="587" alt="image" src="https://github.com/user-attachments/assets/e03df37e-17cb-41f3-a4d4-6ecae4d36a2a" />
+Configure your AWS credentials:
+```bash
+aws configure
+```
+You need to provide aws credentials
+```bash
+AWS Access Key ID [None]: ****************
+AWS Secret Access Key [None]: ****************
+Default region name [None]: us-east-1
+Default output format [None]: json
+```
 
 ### 2. AWS IAM permissions
 The AWS identity used to execute the script must have the required permissions for the AWS service being queried.
-<img width="875" height="405" alt="image" src="https://github.com/user-attachments/assets/0d3f335d-6c47-4d81-a562-10c2270648bd" />
 
+---
 ## 📥 Clone the Repository
-<img width="870" height="477" alt="image" src="https://github.com/user-attachments/assets/1bf45532-45d0-4875-8424-608d077220db" />
-
-
-
-Simple Bash-based AWS resource inventory script
-
-Uses the AWS CLI
-
-Accepts the AWS Region as an argument
-
-Supports multiple AWS services
-
-Validates the number of input arguments
-
-Checks whether AWS CLI is installed
-
-Provides service-specific AWS CLI commands
-
-☁️ Supported AWS Services
-
-The current script supports the following services:
-
-#   AWS Service          Service Name
-
-1    Amazon EC2           ec2
-2    Amazon S3            s3
-3    Amazon RDS           rds
-4    Amazon DynamoDB      dynamodb
-5    AWS Lambda           lambda
-6    Amazon EBS           ebs
-7    Amazon CloudFront    cloudfront
-8    Amazon CloudWatch    cloudwatch
-9    Amazon SNS           sns
-10   Amazon SQS           sqs
-11   Amazon Route 53      route53
-12   Amazon VPC           vpc
-13   AWS CloudFormation   cloudformation
-14   AWS IAM              iam
-
-Note: Although ELB is mentioned in the script comments, there is
-currently no elb case in the script. ELB support can be added in a
-future version.
-
-🛠️ Prerequisites
-
-Before running the script, make sure the following are installed and
-configured:
-
-1. AWS CLI
-
-Install and verify AWS CLI:
-
-aws --version
-
-Configure your AWS credentials:
-
-aws configure
-
-Verify that your credentials work:
-
-aws sts get-caller-identity
-
-2. Bash
-
-The script requires a Bash shell.
-
-For Linux/macOS:
-
-bash --version
-
-For Windows, you can use WSL or Git Bash.
-
-3. Required IAM Permissions
-
-The AWS identity running the script must have permission to call the
-relevant Describe, List, or equivalent AWS API operations.
-
-For example, EC2 resource tracking requires permission for:
-
-ec2:DescribeInstances
-
-The required permissions depend on the service being queried.
-
-📥 Clone the Repository
-
+Clone the repository:
+```bash
 git clone <YOUR_GITHUB_REPOSITORY_URL>
+```
+
+Navigate to the repository:
+```bash
 cd <YOUR_REPOSITORY_NAME>
+```
 
-Make the script executable:
-
+## Make script executable
+Give execute permission to the script:
+```bash
 chmod +x aws_resource_tracker.sh
-
-🚀 Usage
-
-The basic syntax is:
-
-./aws_resource_tracker.sh <region> <service_name>
-
-Example
-
-List EC2 instances in us-east-1:
-
+ls -l aws_resource_tracker.sh
+```
+---
+# 💡 Examples
+### 1. EC2
+List EC2 instances:
+```bash
 ./aws_resource_tracker.sh us-east-1 ec2
-
-List RDS databases:
-
-./aws_resource_tracker.sh us-east-1 rds
-
+```
+The script executes:
+```bash
+aws ec2 describe-instances --region us-east-1
+```
+### 2. S3
 List S3 buckets:
-
+```bash
 ./aws_resource_tracker.sh us-east-1 s3
+```
+The script executes:
+```bash
+aws s3api list-buckets --region us-east-1
+```
+Similaraly we can pass different-2 aws services and get output 
 
-List Lambda functions:
+---
 
-./aws_resource_tracker.sh us-east-1 lambda
+# 🔎 Script Execution Flow
+The script performs the following operations:
+## Step 1: Validate Arguments
+The script checks whether exactly two arguments are provided.
+```bash
+if [ $# -ne 2 ]; then
+    echo "Usage: $0 <region> <service_name>"
+    exit 1
+fi
+```
 
-List VPCs:
-
-./aws_resource_tracker.sh us-east-1 vpc
-
-List CloudFormation stacks:
-
-./aws_resource_tracker.sh us-east-1 cloudformation
-
-📋 Example Output
-
-For example, when querying EC2:
-
-Listing EC2 Instances in us-east-1
-
-{
-    "Reservations": [
-        {
-            "Instances": [
-                {
-                    "InstanceId": "i-xxxxxxxxxxxxxxxxx",
-                    "InstanceType": "t3.micro",
-                    "State": {
-                        "Name": "running"
-                    }
-                }
-            ]
-        }
-    ]
-}
-
-The exact output depends on the AWS resources available in your account
-and the permissions of the configured AWS identity.
-
-🔍 How the Script Works
-
-The script follows these basic steps:
-
-User
-  |
-  | Region + Service
-  v
-aws_resource_tracker.sh
-  |
-  +--> Validate arguments
-  |
-  +--> Check AWS CLI
-  |
-  +--> Check AWS configuration
-  |
-  +--> Identify requested service
-  |
-  +--> Execute AWS CLI command
-  |
-  v
-AWS Account
-  |
-  v
-Resource Information
-
-Step 1: Validate Arguments
-
-The script expects exactly two arguments:
-
-./aws_resource_tracker.sh <region> <service_name>
-
-If the required arguments are not provided, the script displays the
-usage information and exits.
-
-Step 2: Check AWS CLI
-
-The script verifies that the AWS CLI is available:
-
-command -v aws
-
-Step 3: Select the AWS Service
-
-A Bash case statement determines which AWS CLI command should be
-executed.
-
-For example:
-
+## Step 2: Assign Arguments
+The arguments are assigned to variables:
+```bash
+aws_region=$1
+aws_service=$2
+```
+The variables become:
+```bash
+aws_region=us-east-1
+aws_service=ec2
+```
+## Step 3: Check AWS CLI
+The script verifies whether AWS CLI is installed:
+```bash
+if ! command -v aws &> /dev/null; then
+    echo "AWS CLI is not installed. Please install it and try again."
+    exit 1
+fi
+```
+## Step 4: Identify the Service
+The script uses a Bash case statement:
+```bash
 case $aws_service in
     ec2)
+        echo "Listing EC2 Instances in $aws_region"
         aws ec2 describe-instances --region $aws_region
         ;;
     rds)
+        echo "Listing RDS Instances in $aws_region"
         aws rds describe-db-instances --region $aws_region
         ;;
 esac
+```
+## Step 5: Execute AWS CLI Command
 
-Step 4: Query AWS
-
-The corresponding AWS CLI command is executed against the specified
-region.
-
-📁 Repository Structure
-
-.
-├── aws_resource_tracker.sh
-└── README.md
-
-⚠️ Important Notes
-
-Global vs Regional Services
-
-Not every AWS service is strictly regional.
+Based on the selected service, the corresponding AWS CLI command is executed.
 
 For example:
+```bash
+aws ec2 describe-instances --region us-east-1
+```
+AWS then returns the resource information.
+---
 
-S3 buckets are globally managed even though buckets have a
-region.
-
-IAM is a global service.
-
-CloudFront is a global service.
-
-Route 53 is a global service.
-
-Therefore, the --region argument does not have the same meaning for
-every service.
-
-For global services, AWS CLI behavior may depend on the command and
-configured/default region.
-
-Script Validation
-
-The original script contains a couple of syntax/consistency issues that
-should be corrected before running it:
-
-This line needs a comment marker:
-
-# Check if the AWS CLI is configured
-
-instead of:
-
-Check if the AWS CLI is configured
-
-The directory test contains a syntax error:
-
-if [ ! -d ~/.aws ]; ]then
-
-It should be:
-
-if [ ! -d ~/.aws ]; then
-
-The usage comment refers to:
-
-aws_resource_list.sh
-
-while the script filename is:
-
-aws_resource_tracker.sh
-
-The README uses aws_resource_tracker.sh consistently.
-
-The service list in the comments mentions ELB, but the case
-statement currently does not implement elb.
-
-🔐 Security
-
-Do not hard-code AWS access keys or secret keys inside the script.
-
-Avoid:
-
-AWS_ACCESS_KEY_ID="your-access-key"
-AWS_SECRET_ACCESS_KEY="your-secret-key"
-
-Instead, use the AWS CLI credential configuration:
-
-aws configure
-
-or an appropriate IAM role, instance profile, SSO configuration, or
-other AWS-supported credential mechanism.
-
-Never commit:
-
-~/.aws/credentials
-
-to GitHub.
-
-🔮 Future Improvements
-
-Possible enhancements for future versions:
-
-Add Elastic Load Balancer (ALB/NLB) support
-
-Add EKS support
-
-Add API Gateway support
-
-Add Elastic Beanstalk support
-
-Add CloudWatch Logs support
-
-Add resource counts instead of raw JSON only
-
-Add --output table support
-
-Add CSV/JSON export
-
-Add support for multiple regions
-
-Add an option to scan all supported services
-
-Improve error handling
-
-Validate AWS credentials using aws sts get-caller-identity
-
-Add color-coded terminal output
-
-Add logging
-
-Add parallel execution for faster inventory collection
-
-👨‍💻 Author
-
+## 👨‍💻 Author
 Deepak Sharma
 DevOps Engineer
 
-📜 Version
-
+## 📜 Version
 v0.0.1
 
-📄 License
+## 📄 License
+This project is created for:
 
-This project is provided for learning and DevOps automation purposes.
-Add the license appropriate for your GitHub repository.
+- Learning
+- DevOps practice
+- AWS automation
+- AWS CLI practice
+- Infrastructure management
+
+## ⭐ Support
+
+If you find this project useful, please consider giving the repository a ⭐ on GitHub.
