@@ -54,9 +54,14 @@ Verify that AWS CLI is installed:
 aws --version
 ```
 
+<img width="906" height="587" alt="image" src="https://github.com/user-attachments/assets/e03df37e-17cb-41f3-a4d4-6ecae4d36a2a" />
 
+### 2. AWS IAM permissions
+The AWS identity used to execute the script must have the required permissions for the AWS service being queried.
+<img width="875" height="405" alt="image" src="https://github.com/user-attachments/assets/0d3f335d-6c47-4d81-a562-10c2270648bd" />
 
-
+## 📥 Clone the Repository
+<img width="870" height="477" alt="image" src="https://github.com/user-attachments/assets/1bf45532-45d0-4875-8424-608d077220db" />
 
 
 
