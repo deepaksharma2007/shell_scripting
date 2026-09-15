@@ -127,6 +127,7 @@ The script executes:
 ```bash
 aws s3api list-buckets --region us-east-1
 ```
+<img width="1297" height="638" alt="image" src="https://github.com/user-attachments/assets/204a4f96-1aa6-4138-8b2e-ee97240b75a3" />
 Similarly, you can specify different AWS services as an argument to the script and retrieve the corresponding resource information from your AWS account.
 
 ---
