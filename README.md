@@ -6,6 +6,7 @@ The `aws_resource_tracker.sh` script accepts an AWS Region and AWS service name 
 
 ---
 
+
 ## 📌 Features
 
 - Simple Bash-based AWS resource inventory script
@@ -18,7 +19,25 @@ The `aws_resource_tracker.sh` script accepts an AWS Region and AWS service name 
 - Easy to extend with additional AWS services
 
 ---
+## 📌 Overview
 
+Managing and tracking AWS resources across different services can sometimes be time-consuming.
+
+This script provides a simple command-line solution to retrieve resources from commonly used AWS services.
+
+You can specify:
+
+- AWS Region
+- AWS Service
+
+The script then executes the appropriate AWS CLI command.
+
+### Basic Usage
+
+```bash
+./aws_resource_tracker.sh <region> <service_name>
+
+---
 ## ☁️ Supported AWS Services
 
 The script currently supports the following AWS services:
