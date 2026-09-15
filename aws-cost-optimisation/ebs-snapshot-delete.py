@@ -1,5 +1,7 @@
 import boto3
 
+# delete snapshot if not attached with EBS volume
+
 def lambda_handler(event, context):
     ec2 = boto3.client('ec2')
 
