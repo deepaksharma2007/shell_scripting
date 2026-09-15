@@ -184,6 +184,7 @@ For example:
 aws ec2 describe-instances --region us-east-1
 ```
 AWS then returns the resource information.
+
 ---
 
 ## 👨‍💻 Author
