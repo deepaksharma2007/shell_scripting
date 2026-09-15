@@ -36,7 +36,7 @@ The script then executes the appropriate AWS CLI command.
 
 ```bash
 ./aws_resource_tracker.sh <region> <service_name>
-
+```
 ---
 ## ☁️ Supported AWS Services
 
