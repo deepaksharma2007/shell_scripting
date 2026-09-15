@@ -127,7 +127,7 @@ The script executes:
 ```bash
 aws s3api list-buckets --region us-east-1
 ```
-Similaraly we can pass different-2 aws services and get output 
+Similarly, you can specify different AWS services as an argument to the script and retrieve the corresponding resource information from your AWS account.
 
 ---
 
