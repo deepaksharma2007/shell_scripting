@@ -32,6 +32,10 @@ echo "Usage: $0 <region> <service_name>"
 exit 1
 fi
 
+# Assign the arguments to variables and convert the service to lowercase
+aws_region=$1
+aws_service=$2
+
 # Check if the AWS CLI is installed
 if ! command -v aws &> /dev/null; then
 echo "AWS CLI is not installed. Please install it and try again."
